@@ -94,26 +94,85 @@ Regra: o usuário poderá editar o POPI a qualquer momento, inclusive após gera
 
 Representa os dados preenchidos pelo usuário no roteiro interno.
 
-### Campos mínimos
+O formulário interno deve contemplar todas as 16 perguntas originais do roteiro de descrição de rotina e campos adicionais para melhorar o desenho do fluxo.
 
-| Campo | Tipo | Descrição |
+### Campos obrigatórios derivados das perguntas originais
+
+| Nº | Campo técnico | Tipo | Pergunta de origem | Descrição |
+|---|---|---|---|---|
+| 1 | secretaria_departamento_divisao | string | Secretaria / Departamento / Divisão | Identificação da área responsável. |
+| 2 | role_or_position | string | Cargo ou função | Cargo/função de quem informa a rotina. |
+| 3 | routine_name | string | Nome da rotina | Nome da rotina mapeada. |
+| 4 | routine_goal | text | Qual o objetivo dessa rotina? | Explica por que a atividade existe. |
+| 5 | routine_type | enum/string | Atende cidadão ou rotina interna? | Natureza da rotina. |
+| 5.1 | routine_type_other | string/null | Outro | Detalhamento quando a opção for outro. |
+| 6 | start_trigger | text | O que faz essa rotina começar? | Evento, solicitação, sistema, prazo, e-mail etc. |
+| 7 | frequency | string | Essa atividade acontece com que frequência? | Frequência da rotina. |
+| 7.1 | frequency_other | string/null | Outro | Detalhamento quando a frequência for outro. |
+| 8 | participants | text/json | Quem participa da rotina? | Setores/cargos envolvidos e função de cada um. |
+| 9 | legal_basis | text/null | Existe lei, decreto ou norma? | Base normativa ou orientação aplicável. |
+| 10 | step_by_step | text/json | Descreva o passo a passo da rotina | Sequência de execução do início ao fim. |
+| 11 | systems_documents | text/json | Quais sistemas, planilhas ou documentos são utilizados? | Sistemas, planilhas, e-mails, formulários, documentos físicos etc. |
+| 12 | required_information | text/json | Quais informações ou documentos são indispensáveis? | Dados mínimos para iniciar a rotina. |
+| 13 | average_time | string | Quanto tempo, em média, sua parte da rotina leva? | Faixa de tempo. |
+| 14 | bottlenecks | text | Onde acontecem os maiores atrasos ou dificuldades? | Gargalos e problemas enfrentados. |
+| 15 | improvement_ideas | text | O que poderia ser automatizado, simplificado ou melhorado? | Ideias de melhoria, automação ou redução de retrabalho. |
+| 16 | indicators | text/json | Essa rotina tem metas ou indicadores? | Metas, indicadores e forma de medição. |
+
+### Campos adicionais recomendados para desenho do fluxo
+
+| Campo técnico | Tipo | Descrição |
 |---|---|---|
-| role_or_position | string | Cargo ou função de quem informou. |
-| routine_name | string | Nome da rotina. |
-| routine_goal | text | Objetivo da rotina. |
-| routine_type | enum/string | Se atende cidadão, é interna ou outro tipo. |
-| start_trigger | text | O que inicia a rotina. |
-| frequency | string | Frequência de execução. |
-| participants | text | Setores/funções participantes. |
-| legal_basis | text/null | Lei, decreto, norma ou orientação aplicável. |
-| step_by_step | text | Passo a passo da rotina. |
-| systems_documents | text | Sistemas, planilhas e documentos usados. |
-| required_information | text | Informações indispensáveis para iniciar. |
-| average_time | string | Tempo médio estimado. |
-| bottlenecks | text | Atrasos ou dificuldades. |
-| improvement_ideas | text | Melhorias, automações ou simplificações sugeridas. |
-| indicators | text | Metas e indicadores existentes. |
+| routine_inputs | text/json | Entradas da rotina: documentos, dados, listas, protocolos ou demandas recebidas. |
+| routine_outputs | text/json | Saídas ou produtos da rotina: agendamento, documento, despacho, atendimento, relatório etc. |
+| alternative_paths_exceptions | text/json | Caminhos alternativos, exceções, erros, pendências ou situações fora do fluxo principal. |
+| decision_points | text/json | Pontos de decisão do tipo se/caso/quando/sim/não. |
+| final_validation | text | Quem confere, valida ou encerra a rotina. |
 | additional_notes | text/null | Observações complementares. |
+
+### Estrutura recomendada para participantes
+
+```json
+[
+  {
+    "setor_ou_funcao": "Backoffice",
+    "responsabilidade": "Recebe a solicitação e organiza a ocupação de vagas."
+  }
+]
+```
+
+### Estrutura recomendada para passo a passo
+
+```json
+[
+  {
+    "numero": 1,
+    "atividade": "Receber solicitação",
+    "responsavel": "Backoffice",
+    "sistema_ou_documento": "E-mail ou sistema",
+    "entrada": "Solicitação recebida",
+    "saida": "Demanda registrada",
+    "existe_decisao": false,
+    "decisao": null,
+    "caminho_sim": null,
+    "caminho_nao": null
+  }
+]
+```
+
+### Estrutura recomendada para indicadores
+
+```json
+[
+  {
+    "indicador": "Ocupação de vagas",
+    "meta": "95%",
+    "forma_de_medicao": "Vagas ocupadas / vagas liberadas",
+    "fonte_dados": "Sistema informado",
+    "periodicidade": "Mensal"
+  }
+]
+```
 
 ## 7. POPIDocument
 
@@ -125,6 +184,8 @@ Representa os conteúdos gerados e editáveis do documento.
 |---|---|---|
 | pop_markdown | markdown | Parte 1 — Procedimento Operativo Padrão. |
 | intelligent_report_markdown | markdown | Parte 2 — Relatório Inteligente. |
+| flow_reading_markdown | markdown | Leitura textual do fluxo. |
+| flow_steps_table_markdown | markdown | Mapa das etapas do fluxo. |
 | flowchart_mermaid | text | Fluxograma em Mermaid. |
 | final_markdown | markdown | Documento consolidado final. |
 | last_generated_at | datetime/null | Última geração por IA. |
@@ -211,3 +272,5 @@ Controla a numeração por secretaria e ano.
 6. A IA não pode sobrescrever edição manual sem confirmação.
 7. O documento gerado deve registrar lacunas quando faltar informação.
 8. O número do relatório só pode ser alterado por usuário autorizado.
+9. O formulário interno deve incluir todas as 16 perguntas originais do roteiro.
+10. O formulário deve incluir campos auxiliares para desenho de fluxo, decisões e exceções.
