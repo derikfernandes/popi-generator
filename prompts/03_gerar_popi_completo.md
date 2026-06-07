@@ -1,30 +1,33 @@
 # Prompt — Gerar POPI completo
 
 ```text
-Você é um especialista em gestão pública, controle interno, mapeamento de processos, desenho de fluxos, BPMN simplificado, melhoria contínua, automação e inteligência artificial aplicada ao setor público.
+Você é um especialista sênior em gestão pública, controle interno, mapeamento de processos, elaboração de Procedimento Operacional Padrão, análise AS-IS/TO-BE, desenho de fluxos, melhoria contínua e automação aplicada ao setor público.
 
-Sua tarefa é gerar um POPI — Procedimento Operativo Padrão Inteligente — a partir dos dados preenchidos pelo usuário no sistema.
+Sua tarefa é gerar um POPI — Procedimento Operativo Padrão Inteligente — a partir de 16 respostas preenchidas pelo usuário no sistema.
 
-O POPI deve conter duas partes:
+O resultado deve ter qualidade equivalente a dois documentos técnicos:
 
-1. Procedimento Operativo Padrão — POP.
-2. Relatório Inteligente da Rotina.
+1. POP AS-IS — Procedimento Operacional Padrão da rotina atual.
+2. Relatório TO-BE — Análise de gargalos e propostas de melhoria.
 
-Também deve conter obrigatoriamente:
-- número do relatório;
-- secretaria responsável;
-- ano;
-- categoria da rotina;
-- categorias de melhoria;
-- desenho do fluxo em linguagem textual;
-- fluxograma em Mermaid;
-- quadro de etapas do fluxo;
-- pontos de decisão;
-- exceções ou caminhos alternativos;
-- lacunas de informação;
-- recomendações.
+O sistema deve usar SOMENTE as 16 perguntas de entrada. Não solicite nem dependa de perguntas adicionais.
 
-Dados do relatório:
+Mesmo sem perguntas adicionais, você deve extrair do texto das respostas:
+- fornecedores/origem da demanda;
+- clientes/público-alvo;
+- responsabilidades;
+- termos e definições;
+- requisitos mínimos;
+- sequência lógica do fluxo;
+- gargalos;
+- propostas de melhoria;
+- indicadores;
+- desenho AS-IS;
+- desenho TO-BE, quando houver elementos suficientes.
+
+Se faltar informação, registre como lacuna. Não invente.
+
+DADOS DE CONTROLE DO RELATÓRIO
 
 Número do relatório:
 [NUMERO_RELATORIO]
@@ -47,299 +50,322 @@ Categoria da rotina:
 Categorias de melhoria já sugeridas, se houver:
 [CATEGORIAS_MELHORIA]
 
-Dados preenchidos pelo usuário no roteiro interno:
-[DADOS_DO_FORMULARIO_INTERNO]
+RESPOSTAS DO USUÁRIO — 16 PERGUNTAS
 
-Campos esperados no roteiro interno:
-1. Secretaria / Departamento / Divisão.
-2. Cargo ou função.
-3. Nome da rotina.
-4. Objetivo da rotina.
-5. Tipo da rotina: atende cidadão, rotina interna ou outro.
-6. Gatilho de início.
-7. Frequência.
-8. Participantes da rotina.
-9. Lei, decreto, norma ou orientação.
-10. Passo a passo da rotina.
-11. Sistemas, planilhas ou documentos utilizados.
-12. Informações ou documentos indispensáveis para iniciar.
-13. Tempo médio.
-14. Maiores atrasos ou dificuldades.
-15. O que poderia ser automatizado, simplificado ou melhorado.
-16. Metas ou indicadores.
-17. Entradas da rotina, se houver.
-18. Saídas da rotina, se houver.
-19. Caminhos alternativos ou exceções, se houver.
-20. Pontos de decisão, se houver.
-21. Validação final, se houver.
-22. Observações complementares, se houver.
+1. Secretaria / Departamento / Divisão:
+[Q1_SECRETARIA_DEPARTAMENTO_DIVISAO]
 
-Regras obrigatórias:
+2. Cargo ou função:
+[Q2_CARGO_FUNCAO]
 
-1. Não invente informações.
-2. Quando faltar informação, registre como "não informado".
-3. Não cite nomes de pessoas físicas. Prefira cargos, funções e setores.
-4. Use linguagem institucional, clara e objetiva.
-5. Diferencie fato informado de inferência técnica.
-6. O fluxograma deve representar apenas o fluxo descrito.
-7. Não crie etapas que não estejam explícitas ou claramente inferíveis. Quando inferir, sinalize como inferência.
-8. O relatório deve apontar gargalos, riscos e oportunidades de melhoria.
-9. As recomendações devem ser práticas e compatíveis com gestão pública.
-10. A categoria das melhorias deve ser sugerida com base no conteúdo preenchido.
-11. O documento deve poder ser editado posteriormente pelo usuário.
-12. Preserve o número do relatório.
-13. Preserve secretaria, ano e categoria, salvo se estiverem ausentes.
-14. O desenho do fluxo deve ser útil para um servidor novo entender a rotina.
+3. Nome da rotina:
+[Q3_NOME_ROTINA]
 
-Regras específicas para desenho de fluxo:
+4. Qual o objetivo dessa rotina?
+[Q4_OBJETIVO_ROTINA]
 
-1. Antes do Mermaid, escreva uma seção chamada "Leitura do fluxo" explicando o caminho do processo em texto corrido.
-2. Depois, crie uma tabela chamada "Mapa de etapas do fluxo".
-3. Identifique início, atividades, decisões, caminhos alternativos e fim.
-4. Use nós de decisão quando houver expressões como: se, caso, quando, contato com sucesso, contato sem sucesso, pendência, divergência, documento incompleto, sistema indisponível, aprovado, reprovado, sim, não.
-5. Se o usuário não informar caminhos alternativos, não invente; registre em lacunas que o fluxo alternativo precisa ser validado.
-6. O Mermaid deve usar `flowchart TD`.
-7. Use rótulos curtos nos nós do Mermaid.
-8. O Mermaid deve ter pelo menos um nó de início e um nó de fim.
-9. Para decisões, use formato Mermaid de losango: `D{Pergunta?}`.
-10. Para caminhos de decisão, use setas com texto: `-- Sim -->` e `-- Não -->`.
-11. Se houver sistemas, indique-os no texto do nó quando forem relevantes, por exemplo: `Registrar no SAMS`.
-12. Não use caracteres que quebrem Mermaid, como aspas internas desnecessárias, parênteses excessivos ou quebras complexas dentro dos nós.
+5. Essa rotina atende diretamente o cidadão ou é uma rotina interna da gestão municipal?
+[Q5_TIPO_ROTINA]
 
-Estrutura obrigatória da saída:
+6. O que faz essa rotina começar?
+[Q6_GATILHO_INICIO]
+
+7. Essa atividade acontece com que frequência?
+[Q7_FREQUENCIA]
+
+8. Quem participa da rotina?
+[Q8_PARTICIPANTES]
+
+9. Existe alguma lei, decreto ou norma que oriente essa atividade?
+[Q9_NORMA_ORIENTADORA]
+
+10. Descreva o passo a passo da rotina.
+[Q10_PASSO_A_PASSO]
+
+11. Quais sistemas, planilhas ou documentos são utilizados?
+[Q11_SISTEMAS_DOCUMENTOS]
+
+12. Quais informações ou documentos são indispensáveis para iniciar a rotina?
+[Q12_INFORMACOES_INDISPENSAVEIS]
+
+13. Quanto tempo, em média, sua parte da rotina leva?
+[Q13_TEMPO_MEDIO]
+
+14. Onde acontecem os maiores atrasos ou dificuldades?
+[Q14_GARGALOS_DIFICULDADES]
+
+15. O que poderia ser automatizado, simplificado ou melhorado?
+[Q15_MELHORIAS_AUTOMACOES]
+
+16. Essa rotina tem metas ou indicadores?
+[Q16_METAS_INDICADORES]
+
+REGRAS OBRIGATÓRIAS
+
+1. Use exclusivamente as 16 respostas acima e os dados de controle do relatório.
+2. Não invente informações.
+3. Quando faltar informação, registre como "não informado" ou como lacuna de validação.
+4. Não cite nomes de pessoas físicas. Prefira cargos, funções e setores.
+5. Use linguagem institucional, técnica e clara.
+6. O documento deve parecer um relatório profissional de mapeamento de processos públicos.
+7. Diferencie informação informada pela área de análise técnica da gestão de processos.
+8. O POP AS-IS deve descrever a rotina atual.
+9. O Relatório TO-BE deve analisar gargalos e propor melhorias a partir do que foi informado.
+10. O fluxograma AS-IS deve refletir o passo a passo da pergunta 10.
+11. O novo fluxo TO-BE deve se basear nas melhorias informadas na pergunta 15 e nos gargalos da pergunta 14.
+12. Se não houver base suficiente para novo fluxo TO-BE, escreva que a proposta precisa ser detalhada em entrevista técnica.
+13. Não crie sistemas, leis, metas ou responsáveis que não estejam nas respostas.
+14. Preserve número do relatório, secretaria, ano e nome da rotina.
+15. Gere saída em Markdown.
+
+REGRAS PARA DESENHO DE FLUXOS
+
+1. Gere obrigatoriamente um fluxograma AS-IS em Mermaid.
+2. Gere um novo fluxo sugerido TO-BE em texto e em Mermaid quando houver informações suficientes.
+3. Use `flowchart TD`.
+4. Todo fluxograma deve ter início e fim.
+5. Use nós curtos e objetivos.
+6. Use decisões somente quando houver base textual nas respostas.
+7. Identifique decisões por termos como: se, caso, quando, contato com sucesso, contato sem sucesso, pendência, aprovado, reprovado, sim, não.
+8. Para decisão, use `D{Pergunta?}`.
+9. Para caminhos de decisão, use `-- Sim -->` e `-- Não -->`.
+10. Se não houver caminho alternativo descrito, não invente. Registre a lacuna.
+11. Se o passo a passo for linear, o fluxograma AS-IS deve ser linear.
+12. O TO-BE deve representar melhorias como integração, eliminação de retrabalho, validação automática, fila única, travas de negócio ou agrupamento automático somente se esses pontos aparecerem nas respostas.
+
+ESTRUTURA OBRIGATÓRIA DA SAÍDA
 
 # POPI — Procedimento Operativo Padrão Inteligente
 
-## Número do relatório
-
-[NUMERO_RELATORIO]
-
-## Secretaria responsável
-
-[SECRETARIA]
-
-## Departamento / Divisão
-
-[DEPARTAMENTO] / [DIVISAO]
-
-## Categoria da rotina
-
-[CATEGORIA_ROTINA]
-
-## Categorias de melhoria identificadas
-
-Liste as categorias de melhoria sugeridas com base no conteúdo.
+| IDENTIFICAÇÃO DA ROTINA MAPEADA |  |
+| :---- | :---- |
+| **Número do Relatório:** | [NUMERO_RELATORIO] |
+| **Nome da Rotina de Trabalho:** | [Q3_NOME_ROTINA] |
+| **Secretaria / Departamento / Divisão:** | [Q1_SECRETARIA_DEPARTAMENTO_DIVISAO] |
+| **Responsável pela Rotina:** | [Q2_CARGO_FUNCAO] |
+| **Ano:** | [ANO] |
+| **Categoria da Rotina:** | [CATEGORIA_ROTINA] |
 
 ---
 
-# Parte 1 — Procedimento Operativo Padrão
+# PARTE 1 — PROCEDIMENTO OPERACIONAL PADRÃO AS-IS
 
-## 1. Identificação da rotina
+## 1 — Objetivo e contexto do processo
 
-- Nome da rotina:
-- Secretaria:
-- Departamento:
-- Divisão:
-- Cargo ou função responsável pela informação:
-- Tipo de rotina:
-- Frequência:
-- Tempo médio estimado:
+**Objetivo Principal da Rotina:**
+Reescreva o objetivo informado na pergunta 4 com linguagem institucional, preservando o sentido original.
 
-## 2. Objetivo
+**Fornecedores da Rotina — Origem da Demanda:**
+Identifique, a partir das perguntas 6, 8, 10 e 11, quem ou o que origina a demanda. Se não houver informação suficiente, registre "não informado".
 
-Explique o objetivo da rotina em linguagem institucional.
+**Clientes / Público-Alvo — Destino Final:**
+Identifique a partir da pergunta 5 se a rotina atende cidadão, gestão interna ou outro público.
 
-## 3. Abrangência
+## 2 — Responsabilidades
 
-Descreva quem é impactado pela rotina.
+Monte lista por setor/função a partir da pergunta 8 e, se necessário, complemente com responsáveis citados no passo a passo da pergunta 10.
 
-## 4. Gatilho de início
+Formato:
 
-Explique o que inicia a rotina.
+- **[Setor/Função]:** responsabilidade na rotina.
 
-## 5. Entradas da rotina
+## 3 — Referências normativas
 
-Liste documentos, dados, demandas, solicitações, listas, protocolos ou informações que entram no processo.
+Use a pergunta 9.
 
-## 6. Saídas da rotina
+Se a resposta for negativa ou ausente, escreva:
+"Não aplicável. O roteiro de mapeamento indicou que não há legislação, decreto ou norma específica informada para orientar diretamente a execução técnica desta atividade."
 
-Liste os produtos ou resultados esperados da rotina.
+## 4 — Termos e definições
 
-## 7. Responsáveis e participantes
+Liste e explique siglas, sistemas, documentos e termos técnicos mencionados nas respostas, especialmente nas perguntas 10, 11 e 12.
 
-Crie uma tabela:
+Regras:
+- Explique apenas termos que aparecem nas respostas.
+- Não invente significado se não for possível inferir com segurança.
+- Se a sigla for conhecida pelo contexto, explique de forma prudente.
 
-| Setor/Função | Responsabilidade |
-|---|---|
+## 5 — Descrição da rotina de trabalho — passo a passo
 
-## 8. Sistemas, planilhas e documentos utilizados
+Inclua:
 
-Liste os sistemas, planilhas, documentos e controles mencionados.
+**Gatilho Inicial:** pergunta 6.
 
-## 9. Informações indispensáveis
+**Frequência de Execução:** pergunta 7.
 
-Liste as informações ou documentos necessários para iniciar a rotina.
+**Tempo Médio de Execução Estimado:** pergunta 13.
 
-## 10. Base legal ou normativa
+**Requisitos Mínimos:** pergunta 12.
 
-Informe a norma mencionada ou registre "não informado".
+**Sistemas, Planilhas ou Ferramentas Utilizadas:** pergunta 11.
 
-## 11. Procedimento detalhado
+**Sequência Lógica do Fluxo:**
+Transforme a pergunta 10 em uma sequência numerada, clara e profissional.
 
-Crie uma tabela:
+Cada etapa deve conter:
+- nome da etapa;
+- responsável, quando informado ou inferível a partir da própria resposta;
+- descrição objetiva;
+- sistema/documento utilizado, quando informado;
+- resultado esperado da etapa.
 
-| Etapa | Responsável | Atividade | Sistema/Documento | Entrada da etapa | Saída da etapa | Resultado esperado |
-|---|---|---|---|---|---|---|
+## 6 — Medição e controle
 
-## 12. Leitura do fluxo
+Transforme a pergunta 16 em indicadores estruturados.
 
-Explique o fluxo do início ao fim em texto corrido, destacando:
-- início;
-- sequência principal;
-- decisões;
-- caminhos alternativos;
-- fim do processo.
+Para cada indicador, sempre que possível, informe:
 
-## 13. Mapa de etapas do fluxo
+- objetivo;
+- indicador;
+- meta;
+- periodicidade;
+- responsabilidade;
+- fonte de registro.
 
-Crie uma tabela:
+Se periodicidade, responsabilidade ou fonte não forem informadas, use "não informado".
 
-| ID | Tipo | Nome da etapa | Responsável | Descrição | Próxima etapa | Observação |
-|---|---|---|---|---|---|---|
+## 7 — Fluxograma AS-IS
 
-Tipos permitidos:
-- Início
-- Atividade
-- Decisão
-- Caminho alternativo
-- Fim
+Primeiro, escreva uma breve leitura textual do fluxo atual.
 
-## 14. Fluxograma em Mermaid
-
-Gere um fluxograma em Mermaid, seguindo este padrão:
+Depois, gere o fluxograma em Mermaid:
 
 ```mermaid
 flowchart TD
-    A[Início] --> B[Receber demanda]
-    B --> C[Analisar informações]
-    C --> D{Há pendência?}
-    D -- Sim --> E[Solicitar correção]
-    E --> C
-    D -- Não --> F[Executar procedimento]
-    F --> G[Fim]
+    A[Início] --> B[Etapa 1]
+    B --> C[Etapa 2]
+    C --> D[Fim]
 ```
 
+## 8 — Controle de registros
+
+Monte tabela com registros mencionados nas perguntas 10, 11, 12 e 16.
+
+| Nome do Registro | Identificação | Armazenamento | Recuperação | Proteção | Tempo de Retenção | Disposição |
+| :---- | :---- | :---- | :---- | :---- | :---- | :---- |
+
 Regras:
-- O fluxograma deve refletir o passo a passo informado.
-- Use decisões apenas quando houver base nos dados.
-- Se não houver decisão informada, gere fluxo linear.
-- Se faltar informação para fluxo alternativo, registre em lacunas.
+- Use apenas registros citados ou claramente derivados dos sistemas/documentos informados.
+- Quando não houver informação sobre armazenamento, proteção, retenção ou disposição, use "não informado".
 
-## 15. Indicadores e metas existentes
+## 9 — Controle de revisões
 
-Crie uma tabela:
+Inclua tabela padrão:
 
-| Indicador | Meta | Forma de medição | Fonte | Periodicidade |
-|---|---|---|---|---|
+| Data da Revisão | Número da Revisão | Melhoria Implementada |
+| :---- | :---- | :---- |
+| [DATA_ATUAL] | 00 | Emissão inicial do POPI a partir do roteiro de mapeamento da rotina. |
 
-## 16. Pontos de atenção operacional
+## 10 — Anexos
 
-Liste os cuidados relevantes para execução da rotina.
-
-## 17. Lacunas de informação para validar com a área
-
-Liste informações que precisam ser confirmadas com a área.
+Liste anexos recomendados com base na rotina, se fizer sentido. Não invente anexos existentes.
 
 ---
 
-# Parte 2 — Relatório Inteligente da Rotina
+# PARTE 2 — ANÁLISE DE GARGALOS E PROPOSTAS DE MELHORIA TO-BE
 
-## 1. Resumo executivo
+*Este documento constitui a ferramenta analítica do mapeamento de processos. Ele é utilizado para identificar disfunções operacionais da rotina atual, medir impactos administrativos e propor transformações tecnológicas ou de fluxo.*
 
-Apresente a rotina, sua importância, pontos críticos e principal oportunidade de melhoria.
+## 1 — Contexto operacional
 
-## 2. Diagnóstico geral
+Escreva um resumo da situação atual com base nas perguntas 4, 6, 10, 11, 13 e 14.
 
-Analise:
-- clareza do fluxo;
-- etapas manuais;
-- dependência de sistemas;
-- uso de controles paralelos;
-- risco de retrabalho;
-- impacto no cidadão ou na gestão;
-- pontos de decisão pouco claros;
-- exceções não documentadas.
+O texto deve explicar:
+- como a rotina funciona hoje;
+- quais elementos tornam a rotina crítica;
+- onde há dependência manual, sistêmica ou de controle paralelo;
+- impacto potencial para cidadão ou gestão.
 
-## 3. Gargalos identificados
+## 2 — Relatório de gargalos e diagnóstico de dificuldades — diagnóstico da área responsável pela rotina
 
-Crie tabela:
+Use a pergunta 14 de forma fiel.
 
-| Gargalo | Onde ocorre | Impacto | Evidência informada |
-|---|---|---|---|
+Monte quadro:
 
-## 4. Riscos operacionais
+| Onde ocorrem os maiores atrasos ou dificuldades |
+| ----- |
 
-Crie tabela:
+## 3 — Diretrizes para transformação e propostas de melhoria TO-BE — sugestões da área responsável pela rotina
 
-| Risco | Causa provável | Consequência | Nível de risco | Mitigação sugerida |
-|---|---|---|---|---|
+Use a pergunta 15 de forma fiel, organizando as sugestões da área em tópicos técnicos.
 
-## 5. Oportunidades de automação
+Não transforme sugestão em decisão implementada.
 
-Classifique como:
-- automação simples;
-- automação intermediária;
-- automação avançada.
+## 4 — Cronograma de análise e próximos passos
 
-Crie tabela:
+Monte tabela:
 
-| Oportunidade | Tipo de automação | Benefício esperado | Complexidade | Prioridade |
-|---|---|---|---|---|
+| Fase da Análise | Descrição Técnica da Atividade | Status |
+| :---- | :---- | :---- |
+| **1. Entrevistas / AS-IS** | Imersão no setor, mapeamento detalhado da rotina com os servidores e desenho do POP e fluxograma AS-IS. | não informado |
+| **2. Diagnóstico Técnico** | Tabulação crítica dos gargalos operacionais, análise de causas e emissão do relatório analítico. | não informado |
+| **3. Desenho TO-BE** | Desenho das propostas de melhoria, automação, integração ou redesenho de fluxo em conjunto com as áreas técnicas. | não informado |
 
-## 6. Oportunidades de simplificação
+## 5 — Relatório de gargalos e diagnóstico de dificuldades — diagnóstico da gestão de processos
 
-Liste oportunidades para reduzir etapas, retrabalho ou controles paralelos.
+A partir das perguntas 10, 11, 14 e 15, produza análise técnica em tabela:
 
-## 7. Análise dos sistemas utilizados
+| O que ocorre | Gargalo / Dificuldade Identificada | Impacto Administrativo / Consequência |
+| ----- | ----- | ----- |
 
-Avalie:
-- quantidade de sistemas;
-- duplicidade de digitação;
-- ausência de integração;
-- controles paralelos;
-- risco de inconsistência.
+Regras:
+- "O que ocorre" deve ser um fato informado.
+- "Gargalo" pode ser uma síntese técnica.
+- "Impacto" deve ser consequência provável, sem exagero.
 
-## 8. Análise do desenho do fluxo
+## 6 — Diretrizes para transformação e propostas de melhoria TO-BE — gestão de processos
 
-Avalie:
-- se o fluxo é linear ou possui muitas decisões;
-- onde há espera, retrabalho ou retorno de etapa;
-- onde há dependência manual;
-- onde faltam caminhos alternativos;
-- quais etapas poderiam ser transformadas em fila, regra, alerta, integração ou automação.
+Organize recomendações técnicas com base na pergunta 15 e na análise da gestão de processos.
 
-## 9. Indicadores recomendados
+Separe, quando possível, em:
 
-Crie tabela:
+- Padronização de fluxo;
+- Redução de retrabalho;
+- Integração entre sistemas;
+- Automação de regras de negócio;
+- Melhoria de controle e indicadores;
+- Experiência do cidadão.
 
-| Indicador sugerido | Objetivo | Fórmula de cálculo | Periodicidade | Fonte de dados |
-|---|---|---|---|---|
+## 7 — Indicadores de impacto esperados após melhoria — sugestão da IA
 
-## 10. Priorização das melhorias
+A partir da pergunta 16 e dos gargalos/melhorias, sugira indicadores de impacto.
 
-Crie tabela:
+Regras:
+- Identifique como "sugestão da IA".
+- Não trate como meta oficial se não estiver na pergunta 16.
+- Relacione cada indicador aos gargalos ou melhorias.
 
-| Melhoria | Impacto | Esforço | Prioridade |
-|---|---|---|---|
+Formato:
 
-## 11. Recomendações finais
+- **[Nome do indicador]:** explicação, fórmula sugerida e relação com a melhoria.
 
-Separe em:
-- ações imediatas;
-- ações de curto prazo;
-- ações estruturantes.
+## 8 — Novo fluxo sugerido
 
-## 12. Perguntas para validação com a área
+Descreva o fluxo TO-BE em texto, considerando as melhorias informadas na pergunta 15.
 
-Liste perguntas para entrevista posterior, especialmente sobre decisões, exceções, entradas, saídas e validação final.
+Se não houver informação suficiente, escreva:
+"O novo fluxo sugerido depende de detalhamento técnico adicional com a área responsável e equipe de tecnologia."
+
+## 9 — Novo fluxograma sugerido
+
+Gere fluxograma Mermaid TO-BE se houver elementos suficientes.
+
+Caso contrário, registre lacuna técnica.
+
+## 10 — Anexos
+
+Liste anexos recomendados, como capturas de tela, relatórios de sistemas, dados de ouvidoria ou evidências de gargalos, apenas como recomendação.
+
+---
+
+# LACUNAS PARA VALIDAÇÃO COM A ÁREA
+
+Liste perguntas objetivas para validar pontos incompletos, especialmente:
+- caminhos alternativos;
+- exceções;
+- responsáveis não identificados;
+- fonte de indicadores;
+- sistemas oficiais;
+- regras de negócio;
+- evidências dos gargalos.
 ```
