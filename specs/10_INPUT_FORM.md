@@ -6,6 +6,10 @@ Este arquivo define o formulário interno que o usuário deverá preencher dentr
 
 O sistema **não terá integração com Google Forms**. As perguntas abaixo foram extraídas do roteiro de referência usado para descrição de rotina de trabalho e devem virar campos próprios do sistema.
 
+Regra de produto:
+
+> O formulário inicial do usuário deve conter somente 16 perguntas. Nenhuma pergunta adicional deve ser criada no fluxo principal de preenchimento.
+
 ## 2. Instruções exibidas ao usuário
 
 Texto sugerido no início do formulário:
@@ -58,7 +62,7 @@ Descreva as atividades como se estivesse ensinando um novo servidor.
   - Atende diretamente o cidadão
   - Rotina interna
   - Outro
-- **Se Outro:** abrir campo `tipo_rotina_outro`
+- **Observação:** se a opção for “Outro”, o próprio campo deve permitir detalhamento, sem criar nova pergunta numerada.
 
 ### 6. O que faz essa rotina começar?
 
@@ -79,7 +83,7 @@ Descreva as atividades como se estivesse ensinando um novo servidor.
   - Mensalmente
   - Sob demanda
   - Outro
-- **Se Outro:** abrir campo `frequencia_outro`
+- **Observação:** se a opção for “Outro”, o próprio campo deve permitir detalhamento, sem criar nova pergunta numerada.
 
 ## 5. Bloco 3 — Participantes e normas
 
@@ -113,14 +117,10 @@ Formato recomendado no sistema:
 
 Formato recomendado no sistema:
 
-| Nº | Etapa | Responsável | Sistema/Documento usado | Resultado da etapa | Existe decisão? |
-|---|---|---|---|---|---|
+| Nº | Etapa | Responsável | Sistema/Documento usado | Resultado da etapa |
+|---|---|---|---|---|
 
-Campo complementar recomendado para desenho do fluxo:
-
-```text
-Há alguma decisão, condição ou caminho alternativo nesta etapa? Ex.: se contato com sucesso, se documento estiver incompleto, se houver pendência, se sistema estiver indisponível.
-```
+Observação técnica: o desenho do fluxo e o fluxograma devem ser inferidos a partir desta pergunta, especialmente quando o usuário informar condições como “se”, “caso”, “quando”, “contato com sucesso”, “pendência”, “aprovação”, “devolução”, “sim” ou “não”. O sistema não deve criar perguntas adicionais para isso.
 
 ### 11. Quais sistemas, planilhas ou documentos são utilizados?
 
@@ -175,41 +175,9 @@ Formato recomendado no sistema:
 | Indicador | Meta | Forma de medição | Fonte de dados | Periodicidade |
 |---|---|---|---|---|
 
-## 8. Campos adicionais recomendados para melhorar o POPI
+## 8. Campos de controle do sistema
 
-Estes campos não estavam no roteiro original, mas ajudam a gerar POP, relatório e fluxograma melhores.
-
-### 17. Quais são as entradas da rotina?
-
-- **Campo técnico:** `entradas_rotina`
-- **Ajuda:** documentos, solicitações, listas, protocolos, dados ou demandas recebidas.
-
-### 18. Quais são as saídas ou produtos da rotina?
-
-- **Campo técnico:** `saidas_rotina`
-- **Ajuda:** agendamento realizado, relatório, despacho, documento emitido, atendimento concluído etc.
-
-### 19. Existem caminhos alternativos ou exceções?
-
-- **Campo técnico:** `caminhos_alternativos_excecoes`
-- **Ajuda:** informe o que acontece quando há erro, pendência, negativa, ausência de informação, sistema indisponível ou contato sem sucesso.
-
-### 20. Existem pontos de decisão no fluxo?
-
-- **Campo técnico:** `pontos_decisao`
-- **Ajuda:** informe decisões do tipo “se acontecer X, fazer Y; caso contrário, fazer Z”.
-
-### 21. Quem valida ou confere o resultado final?
-
-- **Campo técnico:** `validacao_final`
-
-### 22. Observações complementares
-
-- **Campo técnico:** `observacoes_complementares`
-
-## 9. Campos de controle do sistema
-
-Estes campos não são preenchidos livremente pelo usuário comum.
+Estes campos não são perguntas do usuário e não entram na contagem das 16 perguntas.
 
 | Campo | Descrição |
 |---|---|
@@ -220,12 +188,13 @@ Estes campos não são preenchidos livremente pelo usuário comum.
 | `status` | Controla o ciclo de vida do POPI. |
 | `versao_atual` | Número da versão atual. |
 
-## 10. Critérios de aceite do formulário
+## 9. Critérios de aceite do formulário
 
+- [ ] O formulário inicial possui exatamente 16 perguntas.
 - [ ] Todas as 16 perguntas originais estão representadas como campos do sistema.
 - [ ] O sistema não depende de Google Forms.
 - [ ] O usuário consegue salvar rascunho com campos incompletos.
 - [ ] O usuário consegue editar qualquer campo a qualquer momento.
-- [ ] O passo a passo permite estrutura suficiente para gerar fluxograma.
-- [ ] O sistema permite registrar decisões, exceções e caminhos alternativos.
-- [ ] Os campos adicionais ajudam a gerar fluxos mais precisos.
+- [ ] O passo a passo da pergunta 10 fornece a base para gerar o fluxograma.
+- [ ] O sistema não cria perguntas adicionais para entradas, saídas, decisões ou exceções.
+- [ ] Decisões e exceções devem ser extraídas do texto informado nas 16 perguntas, especialmente das perguntas 10, 14 e 15.
